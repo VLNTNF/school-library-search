@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>📚 French libraries and schools search</title>
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header>
+    <h1>French libraries and schools search</h1>
+  </header>
+  <div class="container">
+    <section id="options">
+      <h2>Filters</h2>
+      <div class="box">
+        <div id="cp">
+          <label for="zip">Zipcode:</label>
+          <input type="text" name="zip" id="zip" placeholder="75000" pattern="[0-9]{5}" style="line-height:1.468;">
+        </div>
+        <div class="box-select" style="margin-right:6px;">
+          <div id="select">
+            <label for="select-select">Select:</label>
+            <select name="select" id="select-select" style="width:100%;"></select>
+          </div>
+        </div>
+        <div id="type">
+          <label for="type-select">Type:</label>
+          <select name="type" id="type-select">
+            <option value="All">All</option>
+            <option value="etab">School</option>
+            <option value="biblio">Library</option>
+          </select>
+        </div>
+        <div id="sort">
+          <label for="sort-select">Sort:</label>
+          <select name="sort" id="sort-select">
+            <option value="asc">🡥</option>
+            <option value="des">🡦</option>
+          </select>
+        </div>
+        <div id="search">
+          <label for="search-button"> </label>
+          <input type="button" name="search" id="search-button" value="Search" style="line-height:1.468;"></input>
+        </div>
+      </div>
+    </section>
+    <section id="results"></section>
+  </div>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Person",
+      "name": "Manu Sporny",
+      "url": "http://manu.sporny.org/about/"
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/alasql@1.7"></script>
+  <script src="data.js" ></script>
+  <script type="text/javascript" charset="UTF-8" src="index.js"></script>
+</body>
+
+</html>
