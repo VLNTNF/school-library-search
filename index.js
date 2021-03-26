@@ -9,6 +9,7 @@ const sectionResults = document.querySelector('#results');
 const selectSelect = document.querySelector('#select-select');
 const typeSelect = document.querySelector('#type-select');
 const zip = document.getElementById("zip");
+const script = document.querySelector('#script');
 
 /**
  * Distance methods
@@ -92,6 +93,8 @@ const querySelect = async () => {
  * Renders
  */
 const renderResults = (results) => {
+  let json = JSON.stringify(results, null, '\t');
+  script.innerHTML = json.slice(2, json.length-1);
   sectionResults.innerHTML = '<h2>Results</h2>';
   if (results.length != 0) {
     const fragment = document.createDocumentFragment();
