@@ -145,3 +145,7 @@ zip.addEventListener('change', event => {
 searchButton.addEventListener('click', event => {
   queryResults();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  querySelect();
+});
