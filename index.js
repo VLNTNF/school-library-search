@@ -49,30 +49,46 @@ const sortDistance = (array, increasing = true) => {
 /**
  * Queries
  */
+
+const queryhtml = () => {
+  var prefix = 'prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> prefix : <http://www.semanticweb.org/chris-nisio/ontologies/2021/2/untitled-ontology-3#>';
+  var query = 'SELECT ?nom WHERE { ?ets rdf:type :etablissement . ?ets :nom_ets ?nom }';
+  var query1 = 'SELECT ?nom ?uai ?post ?adr ?lat ?lon WHERE { ?ets rdf:type :etablissement . ?ets :nom_ets ?nom . ?ets :code_UAI ?uai . ?ets :cp ?post . ';
+  var query2 = '?ets :adresse ?adr . ?ets :latitude ?lat . ?ets :longitude ?lon }';
+  var url = "http://localhost:3030/ds/query";
+  var http = new XMLHttpRequest();
+  http.open("POST", url + '?query=' + encodeURIComponent(prefix+query), true);
+  http.onreadystatechange = function () {
+    if (http.readyState == 4 && http.status == 200) {
+      console.log(http.responseText);
+    }
+  }
+  http.send();
+}
+
 const queryResults = async () => {
-  if(selectSelect.value)
-  { 
+  if (selectSelect.value) {
     var sel_value = selectSelect.value;
     var str = `"${sel_value}"`;
-    if(/^\d+$/.test(sel_value)) { str = `${sel_value}`; }
+    if (/^\d+$/.test(sel_value)) { str = `${sel_value}`; }
     var coords = alasql(`SELECT longitude, latitude FROM ? WHERE code_UAI = ${str}`, [data])[0];
     console.log(str);
     console.log(coords);
-    if(coords){
+    if (coords) {
       var str_where = "";
-      if(typeSelect.value != "All"){ str_where = ` WHERE type = "${typeSelect.value}"`; }
+      if (typeSelect.value != "All") { str_where = ` WHERE type = "${typeSelect.value}"`; }
       var all_etab = alasql(`SELECT * FROM ?${str_where}`, [data]);
       all_etab.forEach((x, i) => {
         all_etab[i].dist = distance(parseFloat(coords.latitude), parseFloat(coords.longitude), parseFloat(x.latitude), parseFloat(x.longitude)).toFixed(1);
       });
       all_etab = all_etab.filter(ele => { return ele.nom_ets != undefined; });
       sortDistance(all_etab, (sortSelect.value == 'asc'));
-      if(sortSelect.value == 'asc'){
+      if (sortSelect.value == 'asc') {
         renderResults(all_etab.slice(1, 101));
       } else {
         renderResults(all_etab.slice(0, 100));
       }
-      
+
     } else {
       renderResults([]);
     }
@@ -83,7 +99,7 @@ const queryResults = async () => {
 
 const querySelect = async () => {
   var zip_value = zip.value;
-  if(!zip.value){ zip_value = "null"; }
+  if (!zip.value) { zip_value = "null"; }
   var res = alasql(`SELECT * FROM ? WHERE cp = ${zip_value}`, [data]);
   res = res.filter(ele => { return ele.nom_ets != undefined; });
   renderSelect(res);
@@ -94,7 +110,7 @@ const querySelect = async () => {
  */
 const renderResults = (results) => {
   let json = JSON.stringify(results, null, '\t');
-  script.innerHTML = json.slice(2, json.length-1);
+  script.innerHTML = json.slice(2, json.length - 1);
   sectionResults.innerHTML = '<h2>Results</h2>';
   if (results.length != 0) {
     const fragment = document.createDocumentFragment();
@@ -109,7 +125,8 @@ const renderResults = (results) => {
         <td>${result.adresse} (${result.cp})</td>
         <td>${result.dist} km</td>
       </tr>
-    `;}).join('');
+    `;
+      }).join('');
     tbody.innerHTML = template;
     thead.innerHTML = `
     <tr>
